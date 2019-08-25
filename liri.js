@@ -5,6 +5,7 @@ require("dotenv").config();
 var inquirer = require("inquirer");
 var Spotify = require('node-spotify-api');
 const axios = require('axios');
+var moment = require('moment');
 
 // import spotify keys file
 var keys = require("./keys.js");
@@ -32,7 +33,7 @@ inquirer.prompt([
         promptOMDB();
     // if user chooses to search concerts run concert prompt
     } else if (response.getstarted === "Search concerts") {
-        // promptConcerts();
+        promptConcert();
     // if user chooses liri bot to pick run liri bot function
     } else if (response.getstarted === "You pick") {
         // liriBot();
@@ -103,12 +104,11 @@ function promptOMDB() {
 
 // search OMDB
 function searchOMDB(userInput) {
-    // GET request for remote image
+    // GET request for OMDB API using axios
     axios({
         method: "get",
         url: "http://www.omdbapi.com/?t=" + userInput + "&apikey=trilogy",
-    })
-        .then(function (response) {
+    }).then(function (response) {
         console.log("Movie title: " + response.data.Title);
         console.log("Year released: " + response.data.Year);
         console.log("IMDB rating: " + response.data.Ratings[0].Value);
@@ -118,5 +118,40 @@ function searchOMDB(userInput) {
         console.log("Plot: " + response.data.Plot);
         console.log("Actors/Actresses: " + response.data.Actors);
         });
+}
 
+//////////////////////////////////////////// END OF OMDB ////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////// CONCERT SEARCH /////////////////////////////////////////
+
+// run concert prompt function
+function promptConcert() {
+    // ask the user what band/artist to search
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What artist or band would you like me to look-up?",
+            name: "concert"
+        }
+    ]).then(function(response) {
+            var userInput = response.concert
+            searchConcert(userInput);
+    });
+}
+
+// search concert API
+function searchConcert(userInput) {
+    // GET request for Bands in Town API using axios
+    axios({
+        method: "get",
+        url: "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp",
+    }).then(function (response) {
+        console.log("Name of venue: " + response.data[0].venue.name);
+        console.log("Venue location: " + response.data[0].venue.city);
+        // store date in var
+        var concertDate = response.data[0].datetime;
+        console.log("Date of concert: " + moment(concertDate).format("MMM Do YY"));
+        });
 }
