@@ -6,6 +6,7 @@ var inquirer = require("inquirer");
 var Spotify = require('node-spotify-api');
 const axios = require('axios');
 var moment = require('moment');
+var fs = require("fs");
 
 // import spotify keys file
 var keys = require("./keys.js");
@@ -36,7 +37,7 @@ inquirer.prompt([
         promptConcert();
     // if user chooses liri bot to pick run liri bot function
     } else if (response.getstarted === "You pick") {
-        // liriBot();
+        liriBot();
     } 
 });
 
@@ -72,12 +73,39 @@ function searchSpotify(userInput) {
         if (err) {
           return console.log('Error occurred: ' + err);
         }
-      console.log("Artist name: " + data.tracks.items[0].album.artists[0].name); 
-      console.log("Album name: " + data.tracks.items[0].album.name); 
-      console.log("Song name: " + userInput); 
-      console.log("Preview URL: " + data.tracks.items[0].preview_url); 
-      console.log("Popularity: " + data.tracks.items[0].popularity);
-      });
+
+        // store results in an object variables
+        var spotifyResults = {
+            artistName: data.tracks.items[0].album.artists[0].name,
+            albumName: data.tracks.items[0].album.name,
+            songName: userInput,
+            previewURL: data.tracks.items[0].preview_url,
+            popularity: data.tracks.items[0].popularity
+        }
+        
+        // display answers in the command line
+        console.log("Artist name: " + spotifyResults.artistName); 
+        console.log("Album name: " + spotifyResults.albumName); 
+        console.log("Song name: " + spotifyResults.songName); 
+        console.log("Preview URL: " + spotifyResults.previewURL); 
+        console.log("Popularity: " + spotifyResults.popularity);
+
+        // convert object into a string
+        var stringObj = JSON.stringify(spotifyResults)
+
+        // append the information to spotifylog.txt file
+        fs.appendFile("spotifylog.txt", stringObj, function(err) {
+            // If an error was experienced we will log it.
+            if (err) {
+                console.log(err);
+            }
+
+            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+            else {
+                console.log("Spotify Results Added!");
+            }
+        })
+    });
 
 }
 
@@ -109,14 +137,44 @@ function searchOMDB(userInput) {
         method: "get",
         url: "http://www.omdbapi.com/?t=" + userInput + "&apikey=trilogy",
     }).then(function (response) {
-        console.log("Movie title: " + response.data.Title);
-        console.log("Year released: " + response.data.Year);
-        console.log("IMDB rating: " + response.data.Ratings[0].Value);
-        console.log("Rotten Tomatoes rating: " + response.data.Ratings[1].Value);
-        console.log("Country: " + response.data.Country);
-        console.log("Language: " + response.data.Language);
-        console.log("Plot: " + response.data.Plot);
-        console.log("Actors/Actresses: " + response.data.Actors);
+
+        // store results in an object
+        var omdbResults = {
+            moveTitle: response.data.Title,
+            yearReleased: response.data.Year,
+            imdbRating: response.data.Ratings[0].Value,
+            rottenRating: response.data.Ratings[1].Value,
+            country: response.data.Country,
+            lanuage: response.data.Language,
+            plot: response.data.Plot,
+            actors: response.data.Actors
+        }
+
+        // display answers in the command line
+        console.log("Movie title: " + omdbResults.moveTitle);
+        console.log("Year released: " + omdbResults.yearReleased);
+        console.log("IMDB rating: " + omdbResults.imdbRating);
+        console.log("Rotten Tomatoes rating: " + omdbResults.rottenRating);
+        console.log("Country: " + omdbResults.country);
+        console.log("Language: " + omdbResults.lanuage);
+        console.log("Plot: " + omdbResults.plot);
+        console.log("Actors/Actresses: " + omdbResults.actors);
+
+        // convert object into a string
+        var stringObj = JSON.stringify(omdbResults)
+
+        // append the information to omdlog.txt file
+        fs.appendFile("omdblog.txt", stringObj, function(err) {
+            // If an error was experienced we will log it.
+            if (err) {
+                console.log(err);
+            }
+
+            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+            else {
+                console.log("OMDB Results Added!");
+            }
+        })
         });
 }
 
@@ -148,10 +206,58 @@ function searchConcert(userInput) {
         method: "get",
         url: "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp",
     }).then(function (response) {
-        console.log("Name of venue: " + response.data[0].venue.name);
-        console.log("Venue location: " + response.data[0].venue.city);
-        // store date in var
-        var concertDate = response.data[0].datetime;
-        console.log("Date of concert: " + moment(concertDate).format("MMM Do YY"));
+
+        // store results in an object
+        var concertResults = {
+            venue: response.data[0].venue.name,
+            location: response.data[0].venue.city,
+            date: moment(response.data[0].datetime).format("MMM Do YY"),
+        }
+
+        // display results in command line
+        console.log("Name of venue: " + concertResults.venue);
+        console.log("Venue location: " + concertResults.location);
+        console.log("Date of concert: " + concertResults.date);
+
+        // convert object into a string
+        var stringObj = JSON.stringify(concertResults)
+
+        // append the information to omdlog.txt file
+        fs.appendFile("concertslog.txt", stringObj, function(err) {
+            // If an error was experienced we will log it.
+            if (err) {
+                console.log(err);
+            }
+
+            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+            else {
+                console.log("Concert Results Added!");
+            }
+        })
         });
 }
+
+////////////////////////////////////// END OF CONCERT SEARCH /////////////////////////////////////////
+
+
+//////////////////////////////////////// LIRI BOT SEARCH /////////////////////////////////////////////
+
+function liriBot() {
+   fs.readFile("random.txt", "utf8", function(error,data) {
+        // if the code experiences any errors it will log the error to the console
+        if (error) {
+            return console.log(error);
+        }
+
+        // split the contents in random.txt by the , into an array
+        var dataArr = data.split(",")
+
+        // store "I want it that way" into a variable
+        var song = dataArr[1];
+        
+        // pass in song to Spotify function
+        searchSpotify(song);
+   })
+}
+
+//////////////////////////////////////// END OFLIRI BOT SEARCH ///////////////////////////////////////////
