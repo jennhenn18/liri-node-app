@@ -1,10 +1,10 @@
 // adding code to read and set any environment variables with the dotenv package
 require("dotenv").config();
 
-// Load the NPM Package inquirer
+// Load the NPM packages
 var inquirer = require("inquirer");
-
 var Spotify = require('node-spotify-api');
+const axios = require('axios');
 
 // import spotify keys file
 var keys = require("./keys.js");
@@ -29,7 +29,7 @@ inquirer.prompt([
         promptSpotify();
     // if user chooses to search OMDB run OMDB prompt
     } else if (response.getstarted === "Search OMDB") {
-        // promptOMDB();
+        promptOMDB();
     // if user chooses to search concerts run concert prompt
     } else if (response.getstarted === "Search concerts") {
         // promptConcerts();
@@ -80,7 +80,43 @@ function searchSpotify(userInput) {
 
 }
 
+/////////////////////////////////////////// END OF SPOTIFY ////////////////////////////////////////
 
 
 
+////////////////////////////////////////////// OMDB //////////////////////////////////////////////
 
+// run OMDB prompt function
+function promptOMDB() {
+    // ask the user what movie to search
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What movie would you like me to look-up?",
+            name: "movie"
+        }
+    ]).then(function(response) {
+            var userInput = response.movie
+            searchOMDB(userInput);
+    });
+}
+
+// search OMDB
+function searchOMDB(userInput) {
+    // GET request for remote image
+    axios({
+        method: "get",
+        url: "http://www.omdbapi.com/?t=" + userInput + "&apikey=trilogy",
+    })
+        .then(function (response) {
+        console.log("Movie title: " + response.data.Title);
+        console.log("Year released: " + response.data.Year);
+        console.log("IMDB rating: " + response.data.Ratings[0].Value);
+        console.log("Rotten Tomatoes rating: " + response.data.Ratings[1].Value);
+        console.log("Country: " + response.data.Country);
+        console.log("Language: " + response.data.Language);
+        console.log("Plot: " + response.data.Plot);
+        console.log("Actors/Actresses: " + response.data.Actors);
+        });
+
+}
