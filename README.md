@@ -18,7 +18,7 @@ I'm happy to introduce the new entertainment bot, Liri Bot! Whether it's music, 
   6) Type "clear" in your terminal to start over
 
 ### Demo
-This [video](https://github.com/jennhenn18/liri-node-app/blob/master/assets/71xNdYVmcl.mp4) will walk-through searching a song using the Search Spotify functionality
+This [video](https://github.com/jennhenn18/liri-node-app/blob/master/assets/71xNdYVmcl.mp4) will walk-through the different Liri Bot prompts. Beginning with Search Spotify and ending with Liri picks.
 
 ### Technologies used
 
