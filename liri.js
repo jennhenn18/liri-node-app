@@ -22,7 +22,7 @@ inquirer.prompt([
     {
         type: "list",
         message: "Welcome to the Liri Bot! I'm here to help you find more information on songs, movies, or concerts. What can I help you with today?",
-        choices: ["Search Spotify", "Search OMDB", "Search concerts", "You pick"],
+        choices: ["Search Spotify", "Search OMDB", "Search concerts", "Liri picks"],
         name: "getstarted"
     }
 ]).then(function(response) {
@@ -36,7 +36,7 @@ inquirer.prompt([
     } else if (response.getstarted === "Search concerts") {
         promptConcert();
     // if user chooses liri bot to pick run liri bot function
-    } else if (response.getstarted === "You pick") {
+    } else if (response.getstarted === "Liri picks") {
         liriBot();
     } 
 });
