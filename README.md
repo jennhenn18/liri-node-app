@@ -23,7 +23,7 @@ This [video](https://github.com/jennhenn18/liri-node-app/blob/master/assets/71xN
 ### Technologies used
 
 For the creation of the Liri Bot I used the following technologies:
-- **NodeJS**:
+- **NodeJS**
 - **NPM packages**:
     - [Node-Spotify-API](https://www.npmjs.com/package/node-spotify-api)
     - [Axios](https://www.npmjs.com/package/axios)
