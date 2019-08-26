@@ -8,15 +8,17 @@ I'm happy to introduce the new entertainment bot, Liri Bot! Whether it's music, 
   2) In your terminal navigate to where you stored the liri.js file and run "node liri.js"
   3) Next, Liri will ask you what category you need help with or to let her decide. Select an option in order to search.
   4) Search sytnax:
+
     - Search Spotify > spotify-this-song "[song name]"
     - Search OMDB > movie-this "[movie name]"
     - Search concerts > concert-this "[name of artist or band]"
     - Liri picks > do-what-it-says
+
   5) Liri Bot will return information based on your search
-6) Type "clear" in your terminal to start over
+  6) Type "clear" in your terminal to start over
 
 ### Demo
-This video will walk-through searching a song using the Search Spotify functionality
+This [video](https://github.com/jennhenn18/liri-node-app/blob/master/assets/71xNdYVmcl.mp4) will walk-through searching a song using the Search Spotify functionality
 
 ### Technologies used
 
