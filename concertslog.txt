@@ -1,1 +1,1 @@
-{"venue":"Del Mar Fairgrounds","location":"Del Mar","date":"Sep 14th 19"}
+{"venue":"Del Mar Fairgrounds","location":"Del Mar","date":"Sep 14th 19"}{"venue":"Del Mar Fairgrounds","location":"Del Mar","date":"Sep 14th 19"}
