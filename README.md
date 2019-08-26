@@ -2,7 +2,7 @@
 
 I'm happy to introduce the new entertainment bot, Liri Bot! Whether it's music, movies, or concerts the Liri Bot has your back. 
 
-#### Getting started
+### Getting started
 
   1) Download the GitHub repo to your computer
   2) In your terminal navigate to where you stored the liri.js file and run "node liri.js"
